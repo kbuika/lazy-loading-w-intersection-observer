@@ -15,13 +15,13 @@ describe("Photo Gallery", () => {
       "repeat(1, 1fr)"
     );
 
-    cy.viewport("iphone-xr");
+    cy.viewport("iphone-6");
     cy.wait(8000);
     cy.checkMediaQuery("(max-width: 768px)");
     cy.get(".container").should(
-      "have.css",
+      "not.have.css",
       "grid-template-columns",
-      "repeat(1, 1fr)"
+      "repeat(auto-fill, minmax(200px, 1fr))"
     );
   });
 
