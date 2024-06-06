@@ -21,4 +21,4 @@ jobs:
           browser: chrome
           build: npm run build
           start: npm run dev
-          wait-on: "http://localhost:5173"
+          wait-on: "npx wait-on --timeout 60000 tcp:5173"
