@@ -57,4 +57,4 @@ Make sure the local server has started
 ### Caveats on the tests
 
 Testing the responsive design proved to be a bit of uphill battle. For some reason, the `.should()` to assert the `grid-template-columns` returned a number.
-This left me with the option of either having to calculate the columns or just checking for the negation of the test ( checking whether a property is absent, because if it shouldn't be present ). That said, I will still put in the time to find the best way to test a responsive design.
+This left me with the option of either having to calculate the columns or just checking for the negation of the test ( checking whether a property is absent, because it shouldn't be present ). That said, I will still put in the time to find the best way to test a responsive design.
