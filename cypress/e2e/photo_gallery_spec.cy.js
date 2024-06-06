@@ -8,7 +8,6 @@ describe("Photo Gallery", () => {
     cy.get(".container").should("be.visible");
 
     cy.viewport("macbook-15");
-    cy.wait(5000);
     cy.get(".container").should(
       "not.have.css", // checks for the absence of a CSS property
       "grid-template-columns",
@@ -16,7 +15,6 @@ describe("Photo Gallery", () => {
     );
 
     cy.viewport("iphone-6");
-    cy.wait(8000);
     cy.checkMediaQuery("(max-width: 768px)");
     cy.get(".container").should(
       "not.have.css", // checks for the absence of a CSS property
