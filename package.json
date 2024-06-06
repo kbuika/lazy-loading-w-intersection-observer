@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "cy:open-e2e": "cypress open --e2e --browser chrome",
     "cy:run-e2e": "cypress run --e2e",
-    "cy:e2e": "start-server-and-test start http-get://localhost:5173 cy:open-e2e"
+    "cy:e2e": "start-server-and-test start http://localhost:5173 cy:open-e2e"
   },
   "dependencies": {
     "react": "^18.2.0",

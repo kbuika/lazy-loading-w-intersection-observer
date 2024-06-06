@@ -1,47 +1,25 @@
-# name: Run Tests
-
-# on:
-#   push:
-#     branches: [main]
-#   pull_request:
-#     branches: [main]
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - uses: actions/setup-node@v3
-
-#       - name: Use Node.js 20
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 20
-#           cache: "npm"
-
-#       #   - name: Install dependencies
-#       #     run: npm install
-
-#       - name: Run tests
-#         run: npm run cy:run-e2e
-
-name: Cypress Tests
+name: Front-end CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  cypress:
+  cypress-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: npm i
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Cypress tests
-        run: npm run cy:run-e2e
+      - name: run cypress tests in chrome
+        uses: cypress-io/github-action@v5
+        timeout-minutes: 10
+        with:
+          browser: chrome
+          record: true
+          build: npm run build
+          start: npm run dev
+          wait-on: "http://localhost:5173"
