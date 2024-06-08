@@ -5,7 +5,6 @@ import photos from "./data/photos";
 export default function App() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [nextPhotoUrl, setNextPhotoUrl] = useState(null);
-  const [scrollPosition] = useState(0);
   const containerRef = useRef(null);
   const observerRef = useRef(null);
   const photoIndexRef = useRef(0);
@@ -78,15 +77,6 @@ export default function App() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedPhoto]);
-
-  useEffect(() => {
-    if (selectedPhoto) {
-      containerRef.current.style.overflow = "hidden";
-    } else {
-      containerRef.current.style.overflow = "auto";
-      containerRef.current.scrollTop = scrollPosition;
-    }
-  }, [selectedPhoto, scrollPosition]);
 
   const handlePhotoClick = (photo, index) => {
     setSelectedPhoto(photo);

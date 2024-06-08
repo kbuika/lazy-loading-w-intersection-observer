@@ -48,7 +48,7 @@ To run the application here are some major prerequisites
 
 #### Running tests
 
-Make sure the local server has started
+Make sure the local server has started on port `5173`
 
 ```bash
     npm run cy:run-e2e
