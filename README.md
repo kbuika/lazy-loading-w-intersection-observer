@@ -53,8 +53,3 @@ Make sure the local server has started on port `5173`
 ```bash
     npm run cy:run-e2e
 ```
-
-### Caveats on the tests
-
-Testing the responsive design proved to be a bit of uphill battle. For some reason, the `.should()` to assert the `grid-template-columns` returned a number.
-This left me with the option of either having to calculate the columns or just checking for the negation of the test ( checking whether a property is absent, because it shouldn't be present ). That said, I will still put in the time to find the best way to test a responsive design.
