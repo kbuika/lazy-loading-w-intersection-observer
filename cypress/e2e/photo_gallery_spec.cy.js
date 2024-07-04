@@ -5,28 +5,45 @@ describe("Photo Gallery", () => {
   });
 
   it("should display photos in a responsive grid", () => {
-    cy.get(".container").should("be.visible");
-
     cy.viewport("macbook-15");
-    cy.get(".container").should(
-      "not.have.css", // checks for the absence of a CSS property
-      "grid-template-columns",
-      "repeat(1, 1fr)"
-    );
+    cy.wait(1000);
+    cy.get(".container").then(($container) => {
+      const containerWidth = $container.width();
+      cy.get(".container .display-flex:visible").then(($images) => {
+        const imageWidth = $images.first().width();
+        const imagesPerRow = Math.floor(containerWidth / imageWidth);
+        expect(imagesPerRow).to.be.greaterThan(1);
+      });
+    });
 
     cy.viewport("iphone-6");
-    cy.checkMediaQuery("(max-width: 768px)");
-    cy.get(".container").should(
-      "not.have.css", // checks for the absence of a CSS property
-      "grid-template-columns",
-      "repeat(auto-fill, minmax(200px, 1fr))"
-    );
+    cy.wait(1000);
+    cy.get(".container").then(($container) => {
+      const containerWidth = $container.width();
+      cy.get(".container .display-flex:visible").then(($images) => {
+        const imageWidth = $images.first().width();
+        const imagesPerRow = Math.floor(containerWidth / imageWidth);
+        expect(imagesPerRow).to.be.equal(1);
+      });
+    });
   });
 
   it("should lazy load photos", () => {
-    cy.scrollTo("bottom");
     cy.get("img.lazy-image").each(($img) => {
-      // check that only visible images are loaded
+      cy.wrap($img).should("not.have.class", "loaded");
+    });
+
+    cy.scrollTo(0, 500);
+    cy.wait(1000);
+    cy.get("img.lazy-image").each(($img) => {
+      if (Cypress.dom.isVisible($img)) {
+        cy.wrap($img).should("have.class", "loaded");
+      }
+    });
+
+    cy.scrollTo("bottom");
+    cy.wait(1000);
+    cy.get("img.lazy-image").each(($img) => {
       if (Cypress.dom.isVisible($img)) {
         cy.wrap($img).should("have.class", "loaded");
       }
@@ -40,11 +57,26 @@ describe("Photo Gallery", () => {
 
   it("should navigate photos using left and right arrow keys", () => {
     cy.get(".btn").first().click();
-    cy.get(".full-view").should("be.visible");
+    cy.get(".full-view img").should("be.visible");
+
+    let currentImageUrl;
+    cy.get(".full-view img").then(($img) => {
+      currentImageUrl = $img.attr("src");
+    });
 
     cy.get("body").trigger("keydown", { key: "ArrowRight", force: true });
 
+    cy.get(".full-view img").should(($img) => {
+      const newImageUrl = $img.attr("src");
+      expect(newImageUrl).not.to.equal(currentImageUrl);
+    });
+
     cy.get("body").trigger("keydown", { key: "ArrowLeft", force: true });
+
+    cy.get(".full-view img").should(($img) => {
+      const newImageUrl = $img.attr("src");
+      expect(newImageUrl).to.equal(currentImageUrl);
+    });
   });
 
   it("should go back to gallery on clicking back button", () => {
